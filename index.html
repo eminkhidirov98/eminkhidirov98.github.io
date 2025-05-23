@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gürcüstanda qalma müddəti</title>
+    <style>
+      body {
+        background: #121212;
+        color: #f5f5f5;
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        color: #00ffd5;
+      }
+
+      .section {
+        margin: 20px 0;
+        font-size: 1.2rem;
+        background-color: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 0 15px rgba(0, 255, 213, 0.2);
+      }
+
+      .bar-container {
+        background-color: #333;
+        border-radius: 8px;
+        overflow: hidden;
+        height: 30px;
+        margin-top: 20px;
+      }
+
+      .bar {
+        height: 100%;
+        background: linear-gradient(90deg, #00ffd5, #00bfff);
+        width: 0;
+        text-align: center;
+        line-height: 30px;
+        color: #000;
+        font-weight: bold;
+        transition: width 1s ease-in-out;
+      }
+
+      .label {
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Gürcüstanda qalma müddəti / Пребывание в Грузии</h1>
+
+    <div class="section">
+      <div class="label">
+        Gürcüstanda keçirdiyin vaxt / Время, проведённое в Грузии:
+      </div>
+      <div id="timeSpent"></div>
+    </div>
+
+    <div class="section">
+      <div class="label">
+        Qayıtmağa qalan vaxt / Сколько осталось до возвращения:
+      </div>
+      <div id="timeLeft"></div>
+    </div>
+
+    <div class="section">
+      <div class="label">
+        Ümumi müddət üzrə irəliləyiş / Прогресс пребывания:
+      </div>
+      <div id="percentInfo"></div>
+      <div class="bar-container">
+        <div class="bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <script>
+      function updateStayInfo(startStr, endStr) {
+        const now = new Date();
+        const start = new Date(startStr);
+        const end = new Date(endStr);
+
+        const totalMs = end - start;
+        const passedMs = now - start;
+        const remainingMs = end - now;
+
+        const passedPercent = Math.min(
+          100,
+          Math.max(0, (passedMs / totalMs) * 100)
+        ).toFixed(2);
+        const remainingPercent = (100 - passedPercent).toFixed(2);
+
+        const spentDays = Math.floor(passedMs / (1000 * 60 * 60 * 24));
+        const spentMonths = Math.floor(spentDays / 30);
+        const spentHours = Math.floor((passedMs / (1000 * 60 * 60)) % 24);
+
+        const leftDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+        const leftMonths = Math.floor(leftDays / 30);
+        const leftHours = Math.floor((remainingMs / (1000 * 60 * 60)) % 24);
+
+        document.getElementById(
+          'timeSpent'
+        ).innerText = `${spentMonths} ay / мес., ${
+          spentDays % 30
+        } gün / дн., ${spentHours} saat / ч.`;
+
+        document.getElementById('timeLeft').innerText =
+          remainingMs > 0
+            ? `${leftMonths} ay / мес., ${
+                leftDays % 30
+              } gün / дн., ${leftHours} saat / ч.`
+            : `Qalma müddəti başa çatıb / Срок пребывания завершился`;
+
+        document.getElementById(
+          'percentInfo'
+        ).innerText = `Keçib / Пройдено: ${passedPercent}% | Qalıb / Осталось: ${remainingPercent}%`;
+
+        const progressBar = document.getElementById('progressBar');
+        progressBar.style.width = `${passedPercent}%`;
+        progressBar.textContent = `${passedPercent}%`;
+      }
+
+      setInterval(() => {
+        updateStayInfo('2025-04-20T00:00:00', '2025-07-20T00:00:00');
+      }, 1000);
+
+      updateStayInfo('2025-04-20T00:00:00', '2025-07-20T00:00:00');
+    </script>
+  </body>
+</html>
