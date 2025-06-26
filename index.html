@@ -2,7 +2,7 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <title>Gürcüstanda qalma müddəti</title>
+    <title>İş axtarışına qədər vaxt</title>
     <style>
       body {
         background: #121212;
@@ -87,52 +87,54 @@
     </style>
   </head>
   <body>
-    <h1>Gürcüstanda qalma müddəti(az qalib!) / Пребывание в Грузии</h1>
+    <h1>İş axtarışına qədər vaxt / До начала поиска работы</h1>
 
     <div class="section">
       <div class="label">
-        Gürcüstanda keçirdiyin vaxt / Время, проведённое в Грузии:
+        Keçən vaxt / Прошедшее время:
       </div>
       <div id="timeSpent"></div>
     </div>
 
     <div class="section">
       <div class="label">
-        Qayıtmağa qalan vaxt / Сколько осталось до возвращения:
+        Qalan vaxt / Оставшееся время:
       </div>
       <div id="timeLeft"></div>
     </div>
 
     <div class="section">
       <div class="label">
-        Ümumi müddət üzrə irəliləyiş / Прогресс пребывания:
+        Ümumi müddət üzrə irəliləyiş / Прогресс:
       </div>
       <div id="percentInfo"></div>
       <div class="bar-container">
         <div class="bar" id="progressBar"></div>
       </div>
     </div>
+
     <div class="promotion__timer">
-      <div class="title">Осталось до конца акции:</div>
+      <div class="title">Qalıb / Осталось:</div>
       <div class="timer">
         <div class="timer__block">
           <span id="days">12</span>
-          дней
+          gün
         </div>
         <div class="timer__block">
           <span id="hours">20</span>
-          часов
+          saat
         </div>
         <div class="timer__block">
           <span id="minutes">56</span>
-          минут
+          dəq
         </div>
         <div class="timer__block">
           <span id="seconds">20</span>
-          секунд
+          san
         </div>
       </div>
     </div>
+
     <script>
       function updateStayInfo(startStr, endStr) {
         const now = new Date();
@@ -159,16 +161,12 @@
 
         document.getElementById(
           'timeSpent'
-        ).innerText = `${spentMonths} ay / мес., ${
-          spentDays % 30
-        } gün / дн., ${spentHours} saat / ч.`;
+        ).innerText = `${spentMonths} ay / мес., ${spentDays % 30} gün / дн., ${spentHours} saat / ч.`;
 
         document.getElementById('timeLeft').innerText =
           remainingMs > 0
-            ? `${leftMonths} ay / мес., ${
-                leftDays % 30
-              } gün / дн., ${leftHours} saat / ч.`
-            : `Qalma müddəti başa çatıb / Срок пребывания завершился`;
+            ? `${leftMonths} ay / мес., ${leftDays % 30} gün / дн., ${leftHours} saat / ч.`
+            : `Vaxt bitdi / Время вышло`;
 
         document.getElementById(
           'percentInfo'
@@ -179,12 +177,16 @@
         progressBar.textContent = `${passedPercent}%`;
       }
 
+      // Изменённые даты:
+      const startDate = '2025-04-20T00:00:00';
+      const endDate = '2025-10-19T00:00:00';
+      const deadline = '2025-10-19T00:00:00';
+
       setInterval(() => {
-        updateStayInfo('2025-04-20T00:00:00', '2025-10-20T00:00:00');
+        updateStayInfo(startDate, endDate);
       }, 1000);
 
-      updateStayInfo('2025-04-20T00:00:00', '2025-10-20T00:00:00');
-      const deadline = '2025-10-19';
+      updateStayInfo(startDate, endDate);
 
       function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date());
@@ -203,11 +205,7 @@
       }
 
       function getZero(num) {
-        if (num >= 0 && num < 10) {
-          return '0' + num;
-        } else {
-          return num;
-        }
+        return num >= 0 && num < 10 ? '0' + num : num;
       }
 
       function setClock(selector, endtime) {
